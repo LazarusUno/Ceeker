@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" class="fade-out">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ceeker</title>
+        <link rel="stylesheet" href="/css/search.css">
+        <link rel="icon" href="/images/robot1.png" type="image/x-icon">
+        <link
+            href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+            rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+            rel="stylesheet" />
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    </head>
+    <body>
+        <div class="header">
+            <nav id="navbar">
+                <a href="index.html">
+                    <img src="images/robot.png" class="logo" alt="Logo">
+                </a>
+                <ul id="menu">
+                    <li>
+                        <form class="search-container" action="search.html"
+                            method="get" role="search">
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                class="search-input" id="search-box"
+                                type="search" name="q" />
+                            <a class="search-btn">
+                                <i class="fas fa-search"></i>
+
+                            </a>
+                        </form>
+
+                    </li>
+                </ul>
+
+                <script>
+      var navbar = document.getElementById("navbar");
+      var menu = document.getElementById("menu");
+      window.onscroll = function () {
+        if (window.pageYOffset >= menu.offsetTop) {
+          navbar.classList.add("sticky");
+        } else {
+          navbar.classList.remove("sticky");
+        }
+      };
+    </script>
+            </nav>
+        </div>
+        <div class="gradient"></div>
+        <main>
+
+            <script async
+                src="https://cse.google.com/cse.js?cx=6498ec77a1dc44a10">
+            </script>
+            <div class="gcse-searchresults-only"></div>
+        </main>
+
+        <script src="js/search.js"></script>
+        <div class="alan-btn"></div>
+        <script
+            type="text/javascript"
+            src="https://studio.alan.app/web/lib/alan_lib.min.js"></script>
+        <script src="ai.js"></script>
+
+    </body>
+</html>

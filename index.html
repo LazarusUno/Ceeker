@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ceeker</title>
+    <link rel="icon" href="images/robot1.png" type="image/x-icon">
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <script src="js/script.js"></script>
+
+  </head>
+  <body>
+    <div class="header">
+      <nav id="navbar">
+        <img src="images/robot.png" class="logo" />
+        <ul id="menu">
+          <li>
+
+            <div class="search-container">
+              <input type="text" name="search" placeholder="Search..."
+                class="search-input" />
+              <a onclick="redirectTo('search.html')" class="search-btn"><i
+                  class="fas fa-search"></i></a>
+              <a onclick="redirectTo('web/chat.html')"
+                class="material-symbols-outlined">grain</a>
+              <a onclick="redirectTo('image.html')"
+                class="material-symbols-outlined">image</a>
+              <a onclick="redirectTo('news.html')"
+                class="material-symbols-outlined">newspaper</a>
+            </div>
+
+          </li>
+
+        </ul>
+        <script>
+          function redirectTo(page) {
+            const searchQuery = document.querySelector('.search-input').value;
+            // Change 'query' to 'q' to match common query parameters for search
+            window.location.href = `${page}?q=${encodeURIComponent(searchQuery)}`;
+          }
+          </script>
+          
+        <script>
+          var navbar = document.getElementById("navbar");
+          var menu = document.getElementById("menu");
+          window.onscroll = function () {
+            if (window.pageYOffset >= menu.offsetTop) {
+              navbar.classList.add("sticky");
+            } else {
+              navbar.classList.remove("sticky");
+            }
+          };
+        </script>
+      </nav>
+    </div>
+    <img src="/images/Ceeker.svg" class="icon" width="100%" />
+    <script
+      type="module"
+      src="https://unpkg.com/@splinetool/viewer@1.2.5/build/spline-viewer.js"></script>
+    <spline-viewer
+      url="https://prod.spline.design/4u8dhX0RKLI8gMQ7/scene.splinecode"></spline-viewer>
+
+    <div class="alan-btn"></div>
+    <script
+      type="text/javascript"
+      src="https://studio.alan.app/web/lib/alan_lib.min.js"></script>
+    <script src="/ai.js"></script>
+
+  </body>
+</html>
