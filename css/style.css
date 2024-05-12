@@ -171,10 +171,7 @@ spline-viewer {
     padding: 5px 5px; /* Adjusted padding for mobile */
   }
 
-  spline-viewer {
-    margin-top: -100px; /* Adjusted margin-top for mobile */
-    height: calc(100vh - 100px); /* Adjusted height for mobile */
-  }
+  
   .search-container:hover {
     animation:none;
   }

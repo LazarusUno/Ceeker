@@ -236,6 +236,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to right, #883fe0, #f37e7e);
 }
+
 @media only screen and (max-width: 600px) {
   .header {
     height: 15vh; /* Adjusted height for mobile */
