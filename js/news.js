@@ -6,16 +6,23 @@ const searchForm = document.querySelector(".search-container");
 
 async function fetchRandomNews() {
   try {
-    const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&apikey=${apikey}&pageSize=12`;
+    const apiUrl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apikey}&pageSize=35`;
     const response = await fetch(apiUrl);
     const data = await response.json();
 
-    return data.articles;
+    const filteredArticles = data.articles.filter(article => {
+      return !article.is_removed && article.urlToImage;
+    });
+
+    const randomizedArticles = shuffleArray(filteredArticles);
+
+    return randomizedArticles;
   } catch (error) {
-    console.error("Error feching random News", error);
+    console.error("Error fetching random news", error);
     return [];
   }
 }
+
 SearchBotton.addEventListener("click", async (e) => {
   e.preventDefault();
   page = 1;
@@ -26,7 +33,6 @@ SearchBotton.addEventListener("click", async (e) => {
 
       displayBlogs(articles);
 
-      // Show "Show more" button if there are more results
     } catch (error) {
       console.error("Error feching  News by query", error);
       return [];
@@ -61,9 +67,42 @@ async function fetchSearchResults(query) {
     const apiUrl = `https://newsapi.org/v2/everything?q=${query}&apiKey=${apikey}&pageSize=12`;
     const response = await fetch(apiUrl);
     const data = await response.json();
+
+    const filteredArticles = data.articles.filter(article => {
+      return !article.is_removed && article.urlToImage;
+    });
+
+    // Fetch additional articles to fill in the gaps
+    const remainingCount = 12 - filteredArticles.length;
+    if (remainingCount > 0) {
+      const additionalArticles = await fetchAdditionalArticles(query, remainingCount);
+      filteredArticles.push(...additionalArticles);
+    }
+    const randomizedArticles = shuffleArray(filteredArticles);
+
+    return randomizedArticles;
+  } catch (error) {
+    console.error("Error fetching search results", error);
+    return [];
+  }
+}
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+async function fetchAdditionalArticles(query, count) {
+  try {
+    const apiUrl = `https://newsapi.org/v2/everything?q=${query}&apiKey=${apikey}&pageSize=${count}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
     return data.articles;
   } catch (error) {
-    console.error("Error feching random News", error);
+    console.error("Error fetching additional articles", error);
     return [];
   }
 }

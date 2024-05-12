@@ -146,3 +146,58 @@ spline-viewer {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to right, #883fe0, #f37e7e);
 }
+
+
+
+/* Add this media query at the end of your CSS file */
+@media only screen and (max-width: 600px) {
+  .header {
+    height: 15vh; /* Adjusted height for mobile */
+  }
+
+  nav {
+    padding: 10px 0; /* Adjusted padding for mobile */
+  }
+
+  .logo {
+    margin: 2px; /* Adjusted margin for mobile */
+  }
+  
+  nav ul li {
+    margin: 10px 10px; /* Adjusted margin for mobile */
+  }
+
+  nav.sticky {
+    padding: 5px 5px; /* Adjusted padding for mobile */
+  }
+
+  spline-viewer {
+    margin-top: -100px; /* Adjusted margin-top for mobile */
+    height: calc(100vh - 100px); /* Adjusted height for mobile */
+  }
+  .search-container:hover {
+    animation:none;
+  }
+
+  .search-container:hover > .search-input {
+    width: 100px;
+  }
+
+
+  
+  
+  .search-container .search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-weight: 500;
+    font-size: 12px;
+    width: 100px;
+    color:#fff;
+  }
+  .search-btn,
+  .material-symbols-outlined {
+    margin-right: 10px;
+  }
+  
+}
