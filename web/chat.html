@@ -1,95 +1,118 @@
 <!DOCTYPE html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="utils/main.css" />
-    <link rel="icon" href="/images/robot1.png" type="image/x-icon">
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato&display=swap"
-      rel="stylesheet" />
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
-      rel="stylesheet"
-      type="text/css" />
-    <title>Ceeker</title>
+  <link rel="stylesheet" href="utils/main.css" />
+  <link rel="icon" href="/images/robot1.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-  </head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css" />
+  <title>Ceeker</title>
 
-  <body><div class="header">
-      <nav id="navbar">
-        <a href="/index.html">
-          <img src="/images/robot.png" class="logo" alt="Logo">
-        </a>
-        <ul id="menu">
-          <li>
-            <form class="search-container">
-              <input id="search-box" class="search-input" type="text" placeholder="Enter prompt here...."/>
-              <a class="search-btn">
-                <span class="material-symbols-outlined">
-                  grain
-                </span>
-              </a>
-            </form>
-          </li>
-        </ul>
+</head>
 
-        <script>
-    var navbar = document.getElementById("navbar");
-    var menu = document.getElementById("menu");
-    window.onscroll = function () {
-      if (window.pageYOffset >= menu.offsetTop) {
-        navbar.classList.add("sticky");
-      } else {
-        navbar.classList.remove("sticky");
-      }
-    };
-  </script>
-      </nav>
-    </div>
-    <div class="gradient"></div>
-    <div class="container">
-      <div id="chat-history"></div>
-    </div>
-    <div class="form-container">
-      <template id="thumb-template">
-        <img class="thumb" />
-      </template>
-    </div>
+<body>
+  <div class="header">
+    <nav id="navbar">
+      <a href="/index.html">
+        <img src="/images/robot.png" class="logo" alt="Logo">
+      </a>
+      <ul id="menu">
+        <li>
+          <form class="search-container">
+            <input id="search-box" class="search-input" type="text" placeholder="Enter prompt here...." />
+            <a class="search-btn">
+              <span class="material-symbols-outlined">
+                grain
+              </span>
+            </a>
+          </form>
+        </li>
+      </ul>
 
-    <script type="module">
-      import {
-        getGenerativeModel,
-        scrollToDocumentBottom,
-        updateUI,
-      } from "./utils/shared.js";
-
-      const promptInput = document.querySelector("#search-box");
-      const historyElement = document.querySelector("#chat-history");
-      let chat;
-
-      document
-        .querySelector(".search-container")
-        .addEventListener("submit", async (event) => {
-          event.preventDefault();
-
-          if (!chat) {
-            const model = await getGenerativeModel({ model: "gemini-pro" });
-            chat = model.startChat({
-              generationConfig: {
-                maxOutputTokens: 10000,
-              },
-            });
+      <script>
+        var navbar = document.getElementById("navbar");
+        var menu = document.getElementById("menu");
+        window.onscroll = function () {
+          if (window.pageYOffset >= menu.offsetTop) {
+            navbar.classList.add("sticky");
+          } else {
+            navbar.classList.remove("sticky");
           }
+        };
+      </script>
+    </nav>
+  </div>
+  <div class="gradient"></div>
+  <div class="container">
+    <div id="chat-history"></div>
+  </div>
+  <div class="form-container">
+    <template id="thumb-template">
+      <img class="thumb" />
+    </template>
+    <button id="history">History</button>
 
-          const userMessage = promptInput.value;
-          promptInput.value = "";
+  </div>
 
-          // Create UI for the new user / assistant messages pair
-          historyElement.innerHTML += `<div class="history-item user-role">
+  <script type="module">
+    import {
+      getGenerativeModel,
+      scrollToDocumentBottom,
+      updateUI,
+    } from "./utils/shared.js";
+
+    const promptInput = document.querySelector("#search-box");
+    const historyElement = document.querySelector("#chat-history");
+    let chat;
+    const chatHistory = [];
+
+    // Stack implementation
+    class Stack {
+      constructor() {
+        this.stack = [];
+      }
+
+      push(item) {
+        this.stack.push(item);
+      }
+
+      pop() {
+        return this.stack.pop();
+      }
+
+      isEmpty() {
+        return this.stack.length === 0;
+      }
+    }
+
+
+    document
+      .querySelector(".search-container")
+      .addEventListener("submit", async (event) => {
+        event.preventDefault();
+        let model2;
+        if (!chat) {
+          const model = await getGenerativeModel({ model: "gemini-pro" });
+          chat = model.startChat({
+            generationConfig: {
+              maxOutputTokens: 10000,
+            },
+          });
+          model2 = JSON.stringify();
+        }
+
+        const userMessage = promptInput.value;
+        promptInput.value = "";
+        chatHistory.push({ role: "User", message: userMessage });
+
+
+        // Create UI for the new user / assistant messages pair
+        historyElement.innerHTML += `<div class="history-item user-role">
             <div class="name">User</div>
             <blockquote>${userMessage}</blockquote>
           </div>
@@ -98,62 +121,78 @@
             <blockquote></blockquote>
           </div>`;
 
-          scrollToDocumentBottom();
-          const resultEls = document.querySelectorAll(
-            ".model-role > blockquote",
-          );
-          await updateUI(
-            resultEls[resultEls.length - 1],
-            () => chat.sendMessageStream(userMessage),
-            true,
-          );
-        });
-    </script>
-    <script>
-      // Ensures code is executed after the document is fully loaded
-      document.addEventListener('DOMContentLoaded', async () => {
-          const urlParams = new URLSearchParams(window.location.search);
-          const query = urlParams.get('q'); // Get the 'q' query parameter
-          const promptInput = document.getElementById('search-box');
-          const historyElement = document.getElementById('chat-history');
-      
-          // Function to initiate a chat with a query from the URL
-          async function initiateChatWithQuery(query) {
-              const userMessage = query;
-              // Add UI elements for the user message
-              // ... (omitted for brevity, same as in your original code)
-              
-              // Simulate user submitting a message through the chat interface
-              const formEvent = new Event('submit', { cancelable: true, bubbles: true });
-              const searchContainer = document.querySelector('.search-container');
-              searchContainer.dispatchEvent(formEvent);
-          }
-      
-          if (query) {
-              promptInput.value = query; // Set the search input to the query value
-              await initiateChatWithQuery(query); // Start the chat with the URL query
-          }
-          
-          // Continue with your existing event listeners for the search container
-          document.querySelector('.search-container').addEventListener('submit', async (event) => {
-              // Keep your existing handling for form submissions
-              // ...
-          });
+        scrollToDocumentBottom();
+        const resultEls = document.querySelectorAll(
+          ".model-role > blockquote",
+        );
+
+
+        await updateUI(
+          resultEls[resultEls.length - 1],
+          () => chat.sendMessageStream(userMessage),
+          true,
+        );
+        chatHistory.push({ role: "Model", message:historyElement.innerHTML });
+
       });
-      </script>
-      
-     <div class="alan-btn"></div>
-     <script
-       type="text/javascript"
-       src="https://studio.alan.app/web/lib/alan_lib.min.js"></script>
-     <script src="/ai.js"></script>
-     <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
-    <script>
-      window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/speed-insights/script.js"></script>
-  </body>
+    document.getElementById("history").addEventListener("click", () => {
+      // Display entire chat history in console
+      displayChatHistory();
+    });
+    function displayChatHistory() {
+      const stack = new Stack();
+      chatHistory.forEach(({ role, message }) => {
+        stack.push({ role, message });
+      });
+
+      while (!stack.isEmpty()) {
+        const { role, message } = stack.pop();
+        console.log(`${role}: ${message}`);
+      }
+    }
+  </script>
+  <script>
+    // Ensures code is executed after the document is fully loaded
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q'); // Get the 'q' query parameter
+      const promptInput = document.getElementById('search-box');
+      const historyElement = document.getElementById('chat-history');
+
+      // Function to initiate a chat with a query from the URL
+      async function initiateChatWithQuery(query) {
+        const userMessage = query;
+        // Add UI elements for the user message
+
+        // Simulate user submitting a message through the chat interface
+        const formEvent = new Event('submit', { cancelable: true, bubbles: true });
+        const searchContainer = document.querySelector('.search-container');
+        searchContainer.dispatchEvent(formEvent);
+      }
+
+      if (query) {
+        promptInput.value = query; // Set the search input to the query value
+        await initiateChatWithQuery(query); // Start the chat with the URL query
+      }
+
+      // Continue with your existing event listeners for the search container
+      document.querySelector('.search-container').addEventListener('submit', async (event) => {
+        // Keep your existing handling for form submissions
+      });
+    });
+  </script>
+
+  <div class="alan-btn"></div>
+  <script type="text/javascript" src="https://studio.alan.app/web/lib/alan_lib.min.js"></script>
+  <script src="/ai.js"></script>
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script>
+    window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
+</body>
+
 </html>

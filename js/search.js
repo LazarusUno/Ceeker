@@ -111,7 +111,7 @@ input.addEventListener("input", (e) => {
 // Function to display autocomplete suggestions
 function displayAutocomplete(suggestions) {
     let autocompleteContainer = document.getElementById("autocomplete-container");
-    autocompleteContainer.innerHTML = "";
+    autocompleteContainer.innerHTML = " ";
 
     if (suggestions.length > 0) {
         // If there are suggestions, display them as a list
@@ -133,5 +133,5 @@ function displayAutocomplete(suggestions) {
 // Function to clear autocomplete suggestions
 function clearAutocomplete() {
     let autocompleteContainer = document.getElementById("autocomplete-container");
-    autocompleteContainer.innerHTML = "";
+    autocompleteContainer.innerHTML = " ";
 }
